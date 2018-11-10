@@ -2,7 +2,7 @@
   "dogs": [
     {
       "id": 2,
-      "name": "Teddy",
+      "name": "Ted",
       "breed": "Rhodesian Ridgeback",
       "sex": "male"
     },

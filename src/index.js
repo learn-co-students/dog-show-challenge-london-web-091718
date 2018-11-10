@@ -1,6 +1,7 @@
 
 
 document.addEventListener('DOMContentLoaded', () => {
+
   const tableBody = document.querySelector('#table-body')
   const dogForm = document.querySelector('#dog-form')
   const nameInput = document.querySelector('input[type="name"]')
@@ -52,11 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
       sex: foundDog.sex
     }
 
-    // dogForm.setAttribute('data-dog-id', `${id}`)
-    nameInput.setAttribute('value', `${dogInfo.name}`)
-    breedInput.setAttribute('value', `${dogInfo.breed}`)
-    sexInput.setAttribute('value', `${dogInfo.sex}`)
-    nameInput.setAttribute('data-dog-id', `${id}`)
+    dogForm.setAttribute('data-dog-id', `${id}`)
+    nameInput.value = `${dogInfo.name}`
+    breedInput.value = `${dogInfo.breed}`
+    sexInput.value = `${dogInfo.sex}`
     }
 
     if(event.target.className === 'remove-btn') {
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
   dogForm.addEventListener('submit', event => {
     event.preventDefault();
 
-    const id = nameInput.dataset.dogId
+    const id = dogForm.dataset.dogId
     const foundDog = findDog(id)
 
     const updateDogInfo = {
@@ -86,20 +86,15 @@ document.addEventListener('DOMContentLoaded', () => {
       sex: sexInput.value
     }
 
-    updateDog(updateDogInfo);
-
-    nameInput.setAttribute('value', `${updateDogInfo.name}`)
-    breedInput.setAttribute('value', `${updateDogInfo.breed}`)
-    sexInput.setAttribute('value', `${updateDogInfo.sex}`)
-
-    dogForm.reset();
-
-    getDogs()
+    updateDog(updateDogInfo)
+      .then(getDogs)
       .then(dogs => {
         state.dogs = [...dogs];
         tableBody.innerHTML = '';
         renderDogs(state.dogs);
       })
+
+    dogForm.reset();
 
   })
 
