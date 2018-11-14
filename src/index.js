@@ -21,13 +21,16 @@ const renderDog = dog => {
 }
 
 // Render Dogs
-const renderDogs = dogs =>
+const renderDogs = dogs => {
+    dogTable.innerHTML = '';
     dogs.forEach(dog => renderDog(dog))
+}
+    
 
 // Fetch Dogs from API
 getDogs(dogURL)
     .then(dogs => {
-        state.dogs = dogs
+        state.dogs = [...dogs]
         renderDogs(dogs)
     })
 
@@ -43,3 +46,17 @@ document.addEventListener('click', event => {
 })
 
 // Submit Button
+dogForm.addEventListener('submit', event => {
+    event.preventDefault()
+    state.dog.name = dogForm.name.value;
+    state.dog.breed = dogForm.breed.value;
+    state.dog.sex = dogForm.sex.value;
+    patchDogs(dogURL, state.dog)
+        .then(() => {
+            dogForm.reset();
+            getDogs(dogURL).then(dogs => {
+                state.dogs = [...dogs]
+                renderDogs(dogs)
+            })
+        })
+})
